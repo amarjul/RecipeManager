@@ -1,7 +1,8 @@
-﻿using RecipeManager_API.Enum;
+﻿using RecipeManager_API.Data;
+using RecipeManager_API.Enum;
 using RecipeManager_API.Models;
 
-namespace RecipeManager_API.Data
+namespace RecipeManager_API.Seeder
 {
     public static class DbSeeder
     {

@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using RecipeManager_API.Data;
+using RecipeManager_API.Seeder;
 
 namespace RecipeManager_API
 {
