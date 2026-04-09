@@ -29,6 +29,27 @@ namespace RecipeManager_API.Controllers
                 .Include(r => r.Ingredients)
                 .AsQueryable();
 
+            // Filter: catgory, difficulty, isFavorite & maxPreparationTime
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                query = query.Where(r => r.Category == category);
+            }
+
+            if (difficulty.HasValue)
+            {
+                query = query.Where(r => (int)r.Difficulty == difficulty.Value);
+            }
+
+            if (isFavorite.HasValue)
+            {
+                query = query.Where(r => r.IsFavorite == isFavorite.Value);
+            }
+
+            if (maxPreparationTime.HasValue)
+            {
+                query = query.Where(r => r.PreparationTime <= maxPreparationTime.Value);
+            }
+
             var recipes = await query.ToListAsync();
 
             var result = recipes.Select(r => new RecipeDto
@@ -84,6 +105,12 @@ namespace RecipeManager_API.Controllers
         [HttpPost]
         public async Task<ActionResult<RecipeDto>> PostRecipe(CreateRecipeDto dto)
         {
+            // Validierung der Pflichtfelder
+            if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Category))
+            {
+                return BadRequest("Name and Category are required.");
+            }
+
             var recipe = new Recipe
             {
                 Name = dto.Name,
@@ -123,6 +150,12 @@ namespace RecipeManager_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRecipe(int id, UpdateRecipeDto dto)
         {
+            // Validierung der Pflichtfelder
+            if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Category))
+            {
+                return BadRequest("Name and Category are required.");
+            }
+
             var recipe = await _context.Recipes
                 .Include(r => r.Ingredients)
                 .FirstOrDefaultAsync(r => r.Id == id);

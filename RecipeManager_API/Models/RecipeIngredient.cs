@@ -3,8 +3,8 @@
     public class RecipeIngredient
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Amount { get; set; } = string.Empty;  // oder string?
+        public string? Name { get; set; }
+        public string? Amount { get; set; }
         public int RecipeID { get; set; }
     }
 }

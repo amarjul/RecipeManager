@@ -2,7 +2,8 @@
 {
     public class RecipeIngredientDto
     {
-        public string Name { get; set; } = string.Empty;    //string? kann zu Null-Problemen fuehren
-        public string Amount { get; set; } = string.Empty;
+        // Keine unnoetigen interne Entity-Details -> IDs nicht notwendig 
+        public string? Name { get; set; }   
+        public string? Amount { get; set; } 
     }
 }

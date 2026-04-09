@@ -4,9 +4,9 @@ namespace RecipeManager_API.DTOs
 {
     public class UpdateRecipeDto
     {
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; }
 
-        public string Category { get; set; } = string.Empty;
+        public string? Category { get; set; } 
 
         public DifficultyLevel Difficulty { get; set; }
 

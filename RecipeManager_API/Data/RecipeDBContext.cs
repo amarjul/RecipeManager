@@ -10,6 +10,7 @@ namespace RecipeManager_API.Data
         {
         }
 
+        // Tabellen fuer Recipes und die Ingredients
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
     }

@@ -7,11 +7,13 @@ namespace RecipeManager_API.Data
     {
         public static void SeedData(RecipeDBContext context)
         {
+            // Ueberpruefung, ob bereits Daten vorhanden sind (Vermeidung doppelter Daten)
             if(context.Recipes.Any())
             {
                 return;
             }
 
+            // Liste mit Recipes
             var recipes = new List<Recipe>
             {
                 new Recipe
@@ -99,7 +101,10 @@ namespace RecipeManager_API.Data
                     }
                 }
             };
-            context.Recipes.AddRange(recipes); // Hinzufuegen mehrerer Rezepte
+
+            // Hinzufuegen mehrerer Recipes
+            context.Recipes.AddRange(recipes);
+            
             context.SaveChanges();
         }
     }
