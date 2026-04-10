@@ -19,11 +19,7 @@ namespace RecipeManager_API.Controllers
 
         // GET: api/recipes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RecipeDto>>> GetRecipes(
-            string? category,
-            int? difficulty,
-            bool? isFavorite,
-            int? maxPreparationTime)
+        public async Task<ActionResult<IEnumerable<RecipeDto>>> GetRecipes(string? category, int? difficulty, bool? isFavorite, int? maxPreparationTime)
         {
             var query = _context.Recipes
                 .Include(r => r.Ingredients)
@@ -111,6 +107,7 @@ namespace RecipeManager_API.Controllers
                 return BadRequest("Name and Category are required.");
             }
 
+            // DTO -> Model
             var recipe = new Recipe
             {
                 Name = dto.Name,
@@ -128,6 +125,7 @@ namespace RecipeManager_API.Controllers
             _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
 
+            //Model -> DTO
             var result = new RecipeDto
             {
                 Id = recipe.Id,
@@ -165,6 +163,7 @@ namespace RecipeManager_API.Controllers
                 return NotFound();
             }
 
+            //DTO -> Models
             recipe.Name = dto.Name;
             recipe.Category = dto.Category;
             recipe.Difficulty = dto.Difficulty;
@@ -199,6 +198,7 @@ namespace RecipeManager_API.Controllers
             }
 
             recipe.IsFavorite = dto.IsFavorite;
+
             await _context.SaveChangesAsync();
 
             return NoContent();

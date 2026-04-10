@@ -13,7 +13,7 @@ namespace RecipeManager_API_Tests
         private RecipeDBContext GetDbContext()
         {
             var options = new DbContextOptionsBuilder<RecipeDBContext>()
-                .UseInMemoryDatabase("TestDb") 
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()) // "TestDb"
                 .Options;
 
             var context = new RecipeDBContext(options);
@@ -31,10 +31,12 @@ namespace RecipeManager_API_Tests
 
             var result = await controller.GetRecipes(null, null, null, null);
 
+            // Typ des Resultats und der Daten
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var recipes = Assert.IsAssignableFrom<IEnumerable<RecipeDto>>(okResult.Value);
 
             Assert.NotEmpty(recipes);
+            // Assert.Equal(3, recipes.Count());
         }
 
         [Fact]
@@ -45,6 +47,7 @@ namespace RecipeManager_API_Tests
 
             var result = await controller.GetRecipe(999);
 
+            // Typ des Rultats
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
@@ -73,7 +76,9 @@ namespace RecipeManager_API_Tests
 
             var result = await controller.PostRecipe(dto);
 
+            // Typ des Resultats
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+
             Assert.Equal(201, createdResult.StatusCode);
         }
 
@@ -102,7 +107,7 @@ namespace RecipeManager_API_Tests
         }
 
         [Fact]
-        public async Task PatchFavorite_ChangesValue()
+        public async Task PatchFavorite_UpdatesFavoriteStatus()
         {
             var context = GetDbContext();
             var controller = new RecipesController(context);
@@ -121,5 +126,6 @@ namespace RecipeManager_API_Tests
             var updated = context.Recipes.First();
             Assert.False(updated.IsFavorite);
         }
+
     }
 }
