@@ -18,15 +18,30 @@ namespace RecipeManager_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Regristiert DBContext und legt In-Memory-Db 
             builder.Services.AddDbContext<RecipeDBContext>(options =>
                 options.UseInMemoryDatabase("RecipeDb"));
+
+            // CORS hinzufuegen
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowWpfClient", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
 
             // Seeder Aufruf
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<RecipeDBContext>();
-            DbSeeder.SeedData(context);
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<RecipeDBContext>();
+                DbSeeder.SeedData(context);
+            }
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -37,8 +52,9 @@ namespace RecipeManager_API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("AllowWpfClient");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
